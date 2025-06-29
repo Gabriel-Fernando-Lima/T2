@@ -1,0 +1,53 @@
+import { Component } from "react";
+
+type Item = { tipo: "produto" | "servico"; nome: string; qtd: number };
+type Consumo = { clienteIndex: number; itens: Item[] };
+type Produto = { nome: string; valor: number };
+
+type Props = {
+  tema: string;
+  produtos: Produto[]; 
+  consumos: Consumo[];
+};
+
+export default class ProdutosMaisConsumo extends Component<Props> {
+  render() {
+    const { tema, consumos } = this.props;
+
+    const totalPorProduto: { [nome: string]: number } = {};
+    consumos.forEach(c =>
+      c.itens
+        .filter(it => it.tipo === "produto")
+        .forEach(it => {
+          totalPorProduto[it.nome] = (totalPorProduto[it.nome] || 0) + it.qtd;
+        })
+    );
+
+    const ranking = Object.entries(totalPorProduto).sort((a, b) => b[1] - a[1]);
+
+    return (
+      <div className="container-fluid">
+        <h4 className="mb-3">Produtos Mais Consumidos</h4>
+
+        {ranking.length === 0 ? (
+          <p>Nenhum consumo de produtos registrado.</p>
+        ) : (
+          <ol className="list-group list-group-numbered">
+            {ranking.map(([nome, qtd], i) => (
+              <li
+                key={i}
+                className="list-group-item d-flex justify-content-between align-items-center"
+                style={{ backgroundColor: i % 2 ? tema : undefined }}
+              >
+                {nome}
+                <span className="badge bg-primary rounded-pill">
+                  {qtd} {qtd === 1 ? "unidade" : "unidades"}
+                </span>
+              </li>
+            ))}
+          </ol>
+        )}
+      </div>
+    );
+  }
+}

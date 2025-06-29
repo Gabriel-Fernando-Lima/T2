@@ -1,43 +1,43 @@
 import { Component } from "react";
 
-type Cliente = { nome: string; nomeSocial: string; cpf: string };
+type Servico = { nome: string; valor: number };
 
 type Props = {
   tema: string;
-  clientes: Cliente[];
-  editarCliente?: (index: number) => void;
-  excluirCliente?: (index: number) => void;  
+  servicos: Servico[];
+  editarServico?: (index: number) => void;
+  excluirServico?: (index: number) => void; 
 };
 
-export default class ListaCliente extends Component<Props> {
+export default class ListaServico extends Component<Props> {
   render() {
-    const { tema, clientes, editarCliente, excluirCliente } = this.props;
+    const { servicos, tema, editarServico, excluirServico } = this.props;
 
     return (
       <div className="container-fluid">
-        <h4 className="mb-3">Lista de Clientes</h4>
+        <h4 className="mb-3">Lista de Serviços</h4>
 
         <div className="list-group">
-          {clientes.map((c, i) => (
+          {servicos.map((s, i) => (
             <div
               key={i}
               className="list-group-item d-flex justify-content-between align-items-center"
               style={{ backgroundColor: i % 2 ? tema : undefined }}
             >
               <span>
-                <strong>{c.nome}</strong> ({c.nomeSocial}) – CPF: {c.cpf}
+                <strong>{s.nome}</strong> — R$ {s.valor.toFixed(2)}
               </span>
 
               <div className="btn-group">
                 <button
                   className="btn btn-sm btn-outline-primary"
-                  onClick={() => editarCliente?.(i)}
+                  onClick={() => editarServico?.(i)}
                 >
                   Editar
                 </button>
                 <button
                   className="btn btn-sm btn-outline-danger"
-                  onClick={() => excluirCliente?.(i)}
+                  onClick={() => excluirServico?.(i)}
                 >
                   Excluir
                 </button>
@@ -45,10 +45,8 @@ export default class ListaCliente extends Component<Props> {
             </div>
           ))}
 
-          {clientes.length === 0 && (
-            <div className="list-group-item">
-              Nenhum cliente cadastrado ainda.
-            </div>
+          {servicos.length === 0 && (
+            <div className="list-group-item">Nenhum serviço cadastrado.</div>
           )}
         </div>
       </div>

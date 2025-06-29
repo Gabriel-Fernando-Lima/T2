@@ -1,35 +1,35 @@
 import { Component } from "react";
 
-type Produto = { nome: string; valor: number };
+type Servico = { nome: string; valor: number };
 
 type props = {
-  tema: string;
-  adicionarProduto?: (produto: Produto) => void;
-  produto?: Produto;
-  salvarEdicao?: (produto: Produto) => void;
+    tema: string;
+    adicionarServico?: (servico: Servico) => void;
+    servico?: Servico;
+    salvarEdicao?: (servico: Servico) => void;
 };
+
 
 type state = {
-  nome: string;
-  valor: number;
+    nome: string;
+    valor: number;
 };
 
-export default class FormularioCadastroProduto extends Component<props, state> {
-  constructor(props: props) {
-    super(props);
+export default class FormularioCadastroServico extends Component<props, state> {
+    constructor(props: props) {
+        super(props);
+        this.state = {
+            nome: props.servico?.nome || "",
+            valor: props.servico?.valor ?? 0
+        };
 
-    this.state = {
-      nome: props.produto?.nome || "",
-      valor: props.produto?.valor ?? 0
+    }
+
+    handleInputChange = (campo: keyof state, valor: string | number) => {
+        this.setState({ [campo]: valor } as Pick<state, keyof state>);
     };
-  }
 
-  handleInputChange = (campo: keyof state, valor: string | number) => {
-    this.setState({ [campo]: valor } as Pick<state, keyof state>);
-  };
-
-
-  salvarProduto = () => {
+   salvarservico = () => {
     const { nome, valor } = this.state;
     if (!nome || valor <= 0) {
       alert("Preencha todos os campos corretamente.");
@@ -37,36 +37,36 @@ export default class FormularioCadastroProduto extends Component<props, state> {
     }
 
 
-    if (this.props.produto && this.props.salvarEdicao) {
+    if (this.props.servico && this.props.salvarEdicao) {
       this.props.salvarEdicao({ nome, valor });
-      alert("Produto atualizado com sucesso!");
-    } else if (this.props.adicionarProduto) {
-      this.props.adicionarProduto({ nome, valor });
-      alert(`Produto "${nome}" cadastrado com sucesso!`);
+      alert("servico atualizado com sucesso!");
+    } else if (this.props.adicionarServico) {
+      this.props.adicionarServico({ nome, valor });
+      alert(`Serviço "${nome}" cadastrado com sucesso!`);
     }
 
 
-    if (!this.props.produto) {
+    if (!this.props.servico) {
       this.setState({ nome: "", valor: 0 });
     }
   };
 
   render() {
-    const { tema, produto } = this.props;
+    const { tema, servico } = this.props;
     const { nome, valor } = this.state;
 
     return (
       <div className="container-fluid">
         <form>
           <h4 className="mb-3">
-            {produto ? "Editar Produto" : "Cadastro de Produto"}
+            {servico ? "Editar servico" : "Cadastro de servico"}
           </h4>
 
           <div className="input-group mb-3">
             <input
               type="text"
               className="form-control"
-              placeholder="Nome do Produto"
+              placeholder="Nome do servico"
               value={nome}
               onChange={(e) => this.handleInputChange("nome", e.target.value)}
             />
@@ -94,9 +94,9 @@ export default class FormularioCadastroProduto extends Component<props, state> {
               className="btn btn-outline-secondary"
               type="button"
               style={{ background: tema }}
-              onClick={this.salvarProduto}
+              onClick={this.salvarservico}
             >
-              {produto ? "Salvar alterações" : "Cadastrar Produto"}
+              {servico ? "Salvar alterações" : "Cadastrar servico"}
             </button>
           </div>
         </form>

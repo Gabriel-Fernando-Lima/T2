@@ -1,43 +1,43 @@
 import { Component } from "react";
 
-type Cliente = { nome: string; nomeSocial: string; cpf: string };
+type Produto = { nome: string; valor: number };
 
 type Props = {
   tema: string;
-  clientes: Cliente[];
-  editarCliente?: (index: number) => void;
-  excluirCliente?: (index: number) => void;  
+  produtos: Produto[];
+  editarProduto?: (index: number) => void;
+  excluirProduto?: (index: number) => void;
 };
 
-export default class ListaCliente extends Component<Props> {
+export default class ListaProduto extends Component<Props> {
   render() {
-    const { tema, clientes, editarCliente, excluirCliente } = this.props;
+    const { produtos, tema, editarProduto, excluirProduto } = this.props;
 
     return (
       <div className="container-fluid">
-        <h4 className="mb-3">Lista de Clientes</h4>
+        <h4 className="mb-3">Lista de Produtos</h4>
 
         <div className="list-group">
-          {clientes.map((c, i) => (
+          {produtos.map((p, i) => (
             <div
               key={i}
               className="list-group-item d-flex justify-content-between align-items-center"
               style={{ backgroundColor: i % 2 ? tema : undefined }}
             >
               <span>
-                <strong>{c.nome}</strong> ({c.nomeSocial}) – CPF: {c.cpf}
+                <strong>{p.nome}</strong> — R$ {p.valor.toFixed(2)}
               </span>
 
               <div className="btn-group">
                 <button
                   className="btn btn-sm btn-outline-primary"
-                  onClick={() => editarCliente?.(i)}
+                  onClick={() => editarProduto?.(i)}
                 >
                   Editar
                 </button>
                 <button
                   className="btn btn-sm btn-outline-danger"
-                  onClick={() => excluirCliente?.(i)}
+                  onClick={() => excluirProduto?.(i)}
                 >
                   Excluir
                 </button>
@@ -45,10 +45,8 @@ export default class ListaCliente extends Component<Props> {
             </div>
           ))}
 
-          {clientes.length === 0 && (
-            <div className="list-group-item">
-              Nenhum cliente cadastrado ainda.
-            </div>
+          {produtos.length === 0 && (
+            <div className="list-group-item">Nenhum produto cadastrado.</div>
           )}
         </div>
       </div>
